@@ -13,7 +13,11 @@ class Post extends Component {
           <button
             className="edit"
             onClick={() =>
-              this.props.dispatch({ type: "EDIT_POST", id: this.props.post.id })
+              this.props.dispatch({
+                type: "EDIT_POST",
+                nid: this.props.post.nid,
+                csrf_token: this.props.post.csrf_token,
+              })
             }
           >
             Edit
@@ -23,7 +27,8 @@ class Post extends Component {
             onClick={() =>
               this.props.dispatch({
                 type: "DELETE_POST",
-                payload: this.props.post,
+                nid: this.props.post.nid,
+                csrf_token: this.props.post.csrf_token,
               })
             }
           >

@@ -8,7 +8,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Route path="/" render={() => <AllPost />} />
+        <Route path="/home" render={() => <AllPost />} />
         <div>
           <Switch>
             <Route path="/posts">
