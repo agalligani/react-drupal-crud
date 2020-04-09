@@ -1,17 +1,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import token from "basic-auth-token";
+
+const generateToken = (id, pw) => {
+  console.log(id, pw);
+  let basic_auth_token = token(id, pw);
+  return basic_auth_token;
+};
 
 class UserLogin extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const userid = this.getUserId.value;
     const password = this.getPassword.value;
-    this._userLogin(userid, password);
+    const token = generateToken(userid, password);
+    this._userLogin(userid, password, token);
     this.getUserId.value = "";
     this.getPassword.value = "";
   };
 
-  _userLogin = async (userid, password) => {
+  _userLogin = async (userid, password, token) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const body = JSON.stringify({
@@ -32,7 +40,7 @@ class UserLogin extends Component {
       );
       let status = response.status;
       let data = await response.text();
-      let payload = { status: status, data: data };
+      let payload = { status: status, data: data, basic_auth_token: token };
       this.props.dispatch({
         type: "USER_LOGIN",
         payload,

@@ -15,10 +15,14 @@ export default (state = initialUser, action) => {
           logout_token: data.logout_token,
           message: "Welcome " + data.current_user.name,
           login_status: action.payload.status,
+          basic_auth_token: action.payload.basic_auth_token,
         };
       } else {
         return { ...state, message: "You Are not Logged In" };
       }
+    case "USER_LOGOUT":
+      console.log("whaaat?");
+      return initialUser;
     default:
       return state;
   }
