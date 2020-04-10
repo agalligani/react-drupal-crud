@@ -8,11 +8,18 @@ import axios from "axios";
 class AllPost extends Component {
   componentDidMount = async () => {
     let csrf_token = this.props.state ? this.props.state.user.csrf_token : null;
+    let basic_auth_token = this.props.state
+      ? this.props.state.user.basic_auth_token
+      : null;
     const articles_url =
       "http://admin.flambeaucabin.com/articles/history?_format=json";
     let response = await axios.get(articles_url);
     const data = response.data.map((p) => {
-      return { ...p, csrf_token: csrf_token };
+      return {
+        ...p,
+        csrf_token: csrf_token,
+        basic_auth_token: basic_auth_token,
+      };
     });
     this.props.dispatch(setArticles(data));
   };

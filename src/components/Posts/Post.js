@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-// import Alert from "../Alert/Alert";
-// import AlertOverlay from "../Alert/AlertOverlay";
+import { deleteArticle } from "../../_actions/postActions";
 
 class Post extends Component {
   render() {
@@ -25,19 +24,19 @@ class Post extends Component {
           <button
             className="delete"
             onClick={() =>
-              this.props.dispatch({
-                type: "DELETE_POST",
-                nid: this.props.post.nid,
-                csrf_token: this.props.post.csrf_token,
-              })
+              this.props.dispatch(
+                deleteArticle(
+                  "http://admin.flambeaucabin.com/",
+                  this.props.post.nid,
+                  this.props.post.basic_auth_token,
+                  this.props.post.csrf_token
+                )
+              )
             }
           >
             Delete
           </button>
         </div>
-        {/* <AlertOverlay>
-          <Alert></Alert>
-        </AlertOverlay> */}
       </div>
     );
   }

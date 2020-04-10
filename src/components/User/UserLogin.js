@@ -3,9 +3,21 @@ import { connect } from "react-redux";
 import token from "basic-auth-token";
 
 const generateToken = (id, pw) => {
-  console.log(id, pw);
   let basic_auth_token = token(id, pw);
   return basic_auth_token;
+};
+
+const get_session = async () => {
+  try {
+    let response = await fetch("http://admin.flambeaucabin.com/session/token", {
+      method: "GET",
+    });
+    let session_token = await response.text();
+    console.log("session", session_token);
+    return session_token;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 class UserLogin extends Component {
@@ -38,9 +50,16 @@ class UserLogin extends Component {
         "http://adminflambeau.com/user/login?_format=json",
         requestOptions
       );
+
       let status = response.status;
       let data = await response.text();
-      let payload = { status: status, data: data, basic_auth_token: token };
+      let session = await get_session();
+      let payload = {
+        status: status,
+        data: data,
+        basic_auth_token: token,
+        session: session,
+      };
       this.props.dispatch({
         type: "USER_LOGIN",
         payload,

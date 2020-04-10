@@ -1,34 +1,33 @@
 import { initialPosts } from "./initialState";
-import axios from "axios";
 
-const delete_post = async (nid, csrf_token) => {
-  const options = {
-    withCredentials: true,
-    headers: { "X-CSRF-Token": csrf_token },
-    params: { _format: "json" },
+const delete_post = (nid, token, csrf) => {
+  console.log(nid, token);
+  const headers = { Authorization: `Basic ${token}`, "X-CSRF-Token": csrf };
+  const requestOptions = {
+    method: "DELETE",
+    headers: headers,
+    body: "",
+    redirect: "follow",
   };
 
-  try {
-    let response = await axios.delete(
-      `http://admin.flambeaucabin.com/node/${nid}`,
-      null,
-      options
-    );
-    console.log(response);
-  } catch (error) {
-    console.error(error);
-    return;
-  }
-
-  // let response = await axios.delete(
-  //   `http://admin.flambeaucabin.com/node/${nid}?_format=json`,
-  //   {
-  //     headers: {
-  //       "X-CSRF-Token": "Q-dlAeGLxXhQ6L3NEQFpaSIZmgA4Wl1xcook9kwM7tM",
-  //     },
-  //   }
-  // );
+  fetch(
+    `http://admin.flambeaucabin.com/node/${nid}?_format=json`,
+    requestOptions
+  )
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
 };
+
+// let response = await axios.delete(
+//   `http://admin.flambeaucabin.com/node/${nid}?_format=json`,
+//   {
+//     headers: {
+//       "X-CSRF-Token": "Q-dlAeGLxXhQ6L3NEQFpaSIZmgA4Wl1xcook9kwM7tM",
+//     },
+//   }
+// );
+// };
 
 export default (state = initialPosts, action) => {
   switch (action.type) {
@@ -37,7 +36,7 @@ export default (state = initialPosts, action) => {
     case "ADD_POST":
       return state.concat([action.data]);
     case "DELETE_POST":
-      delete_post(action.nid, action.csrf_token);
+      delete_post(action.nid, action.basic_auth_token, action.session_token);
       return state.filter((post) => post.id !== action.id);
     case "EDIT_POST":
       return state.map((post) =>

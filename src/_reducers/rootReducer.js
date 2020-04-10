@@ -3,7 +3,6 @@
 */
 
 import { combineReducers } from "redux";
-import alertReducer from "./alertReducer";
 import posts from "./postReducer";
 import user from "./userReducer";
 
