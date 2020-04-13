@@ -19,22 +19,92 @@ const delete_post = (nid, token, csrf) => {
     .catch((error) => console.log("error", error));
 };
 
-// let response = await axios.delete(
-//   `http://admin.flambeaucabin.com/node/${nid}?_format=json`,
-//   {
-//     headers: {
-//       "X-CSRF-Token": "Q-dlAeGLxXhQ6L3NEQFpaSIZmgA4Wl1xcook9kwM7tM",
-//     },
-//   }
-// );
-// };
+const add_post = (baseURL, token, csrf, body) => {
+  const headers = {
+    "Content-type": "application/hal+json",
+    Authorization: `Basic ${token}`,
+    "X-CSRF-Token": csrf,
+  };
+  console.log(headers);
+  const requestOptions = {
+    method: "POST",
+    headers: headers,
+    body: body,
+    redirect: "follow",
+  };
+  fetch("https://admin.flambeaucabin.com/node?_format=hal_json", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+};
 
 export default (state = initialPosts, action) => {
   switch (action.type) {
     case "LOAD_POSTS":
       return action.payload;
+
     case "ADD_POST":
-      return state.concat([action.data]);
+      const node = JSON.stringify({
+        _links: {
+          type: {
+            href: "https://admin.flambeaucabin.com/rest/type/node/article",
+          },
+          "https://admin.flambeaucabin.com/rest/relation/node/article/field_tags": [
+            {
+              href:
+                "https://admin.flambeaucabin.com/taxonomy/term/1?_format=hal_json",
+              lang: "en",
+            },
+          ],
+        },
+        type: [
+          {
+            target_id: "article",
+            target_type: "node_type",
+          },
+        ],
+        title: [
+          {
+            value: action.article.title,
+          },
+        ],
+        body: [
+          {
+            value: action.article.body,
+            format: "plain_text",
+          },
+        ],
+        _embedded: {
+          "https://admin.flambeaucabin.com/rest/relation/node/article/field_tags": [
+            {
+              _links: {
+                self: {
+                  href:
+                    "https://admin.flambeaucabin.com/taxonomy/term/1?_format=hal_json",
+                },
+                type: {
+                  href: "https://admin.flambeaucabin.com/taxonomy_term/tags",
+                },
+              },
+              uuid: [
+                {
+                  value: "cc818831-e700-46e0-9b47-7a04507b817e",
+                },
+              ],
+              lang: "en",
+            },
+          ],
+        },
+      });
+
+      console.log(action);
+      add_post(
+        action.baseURL,
+        action.basic_auth_token,
+        action.session_token,
+        node
+      );
+      return state;
     case "DELETE_POST":
       delete_post(action.nid, action.basic_auth_token, action.session_token);
       return state.filter((post) => post.id !== action.id);
@@ -48,7 +118,7 @@ export default (state = initialPosts, action) => {
           return {
             ...post,
             title: action.data.newTitle,
-            message: action.data.newMessage,
+            body: action.data.newBody,
             editing: !post.editing,
           };
         } else return post;

@@ -1,8 +1,23 @@
 export const setArticles = (data) => {
-  console.log(data);
   return {
     type: "LOAD_POSTS",
     payload: data,
+  };
+};
+
+export const addArticle = (
+  article,
+  baseURL,
+  basic_auth_token,
+  session_token
+) => {
+  console.log(baseURL);
+  return {
+    type: "ADD_POST",
+    article: article,
+    baseURL: baseURL,
+    basic_auth_token: basic_auth_token,
+    session_token: session_token,
   };
 };
 

@@ -1,22 +1,29 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { addArticle } from "../../_actions/postActions";
+
 class PostForm extends Component {
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
     const title = this.getTitle.value;
-    const message = this.getMessage.value;
-    const data = {
-      id: new Date(),
+    const body = this.getBody.value;
+    const article = {
       title,
-      message,
-      editing: false
+      body,
+      editing: false,
     };
-    this.props.dispatch({
-      type: "ADD_POST",
-      data
-    });
+
+    this.props.dispatch(
+      addArticle(
+        article,
+        "https://admin.flambeaucabin.com/",
+        this.props.state.user.basic_auth_token,
+        this.props.state.user.session
+      )
+    );
+
     this.getTitle.value = "";
-    this.getMessage.value = "";
+    this.getBody.value = "";
   };
   render() {
     return (
@@ -26,7 +33,7 @@ class PostForm extends Component {
           <input
             required
             type="text"
-            ref={input => (this.getTitle = input)}
+            ref={(input) => (this.getTitle = input)}
             placeholder="Enter Post Title"
           />
           <br />
@@ -34,7 +41,7 @@ class PostForm extends Component {
           <textarea
             required
             rows="5"
-            ref={input => (this.getMessage = input)}
+            ref={(input) => (this.getBody = input)}
             cols="28"
             placeholder="Enter Post"
           />
@@ -46,4 +53,11 @@ class PostForm extends Component {
     );
   }
 }
-export default connect()(PostForm);
+
+const mapStateToProps = (state) => {
+  return {
+    state: state,
+  };
+};
+
+export default connect(mapStateToProps)(PostForm);

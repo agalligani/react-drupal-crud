@@ -9,9 +9,12 @@ const generateToken = (id, pw) => {
 
 const get_session = async () => {
   try {
-    let response = await fetch("http://admin.flambeaucabin.com/session/token", {
-      method: "GET",
-    });
+    let response = await fetch(
+      "http://admin.flambeaucabin.com/rest/session/token",
+      {
+        method: "GET",
+      }
+    );
     let session_token = await response.text();
     console.log("session", session_token);
     return session_token;
