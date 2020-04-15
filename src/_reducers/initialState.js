@@ -17,3 +17,8 @@ export const initialAlerts = {
 export const initialPosts = {
   posts: [],
 };
+
+export const initialMedia = {
+  images: [],
+  videos: [],
+};

@@ -5,8 +5,10 @@
 import { combineReducers } from "redux";
 import posts from "./postReducer";
 import user from "./userReducer";
+import media from "./mediaReducer";
 
 export default combineReducers({
   posts,
   user,
+  media,
 });

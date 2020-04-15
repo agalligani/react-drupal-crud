@@ -5,7 +5,6 @@ class UserDeets extends Component {
   _submitHandler = (e) => {
     e.preventDefault();
     this.props.dispatch({ type: "USER_LOGOUT" });
-    console.log("logging out bitches!");
   };
 
   _submitDelete = (n) => {
@@ -14,6 +13,7 @@ class UserDeets extends Component {
     fetch(url, {
       headers: {
         Authorization: "Basic YWdhbGxpZ2FuaTpDb3dGbG9wIzEyMzQ=",
+        "X-csrf-token": "",
       },
       method: "DELETE",
     });
@@ -25,7 +25,6 @@ class UserDeets extends Component {
         <h2>User Details</h2>
         <h4>{JSON.stringify(this.props.user)}</h4>
         <button onClick={this._submitHandler}>Log Out</button>
-        <button onClick={this._submitDelete(4)}>Delete</button>
       </div>
     );
   }
