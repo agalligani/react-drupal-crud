@@ -16,30 +16,26 @@ class ImageUpload extends Component {
     this.setState({ selectedFile: event.target.files[0] });
   };
 
-  //     const reader = new FileReader();
-  //     reader.onload = async () => {
-  //       let result = await reader.result;
-  //       this.setState({ secure_url: result });
-  //     };
-  //     if (file) {
-  //       reader.readAsDataURL(file);
-  //     }
-  //   };
-
   fileUploadHandler = async () => {
-    let fileData = null;
+    //Use HAL+JSON to upload an image file using REST API
     let file = this.state.selectedFile;
     const reader = new FileReader();
     reader.onload = async () => {
-      let result = await reader.result;
+      let arrayBuffer = await reader.result;
+      let base64String = btoa(
+        new Uint8Array(arrayBuffer).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ""
+        )
+      );
       const { basic_auth_token, session } = this.props.state.user;
       const headers = {
         "Content-type": "application/hal+json",
-        "Content-Disposition": "file; filename='filename.jpg'",
         Authorization: `Basic ${basic_auth_token}`,
         "X-CSRF-Token": session,
+        "Content-Disposition": "file; filename='filename.jpg'",
       };
-      const body = JSON.stringify({
+      const body = await JSON.stringify({
         _links: {
           type: {
             href: `${API_URL}/rest/type/file/image`,
@@ -52,12 +48,12 @@ class ImageUpload extends Component {
         ],
         filemime: [
           {
-            value: "image/png",
+            value: "image/jpg",
           },
         ],
         data: [
           {
-            value: result,
+            value: base64String,
           },
         ],
       });
@@ -73,7 +69,7 @@ class ImageUpload extends Component {
       }
     };
     if (file) {
-      fileData = reader.readAsDataURL(file);
+      reader.readAsArrayBuffer(file);
     }
   };
 
