@@ -18,7 +18,11 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <MainNav />
+        <MainNav
+          isAuthenticated={
+            this.props.state.user.login_status === 200 ? true : false
+          }
+        />
         <AuthButton />
         <Route path="/imageupload" render={() => <ImageUpload />} />
         <Route path="/home" render={() => <AllPost />} />
