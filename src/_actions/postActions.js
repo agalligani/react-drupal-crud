@@ -30,3 +30,13 @@ export const deleteArticle = (baseURL, nid, basic_auth_token, csrf_token) => {
     csrf_token: csrf_token,
   };
 };
+
+export const editArticle = (baseURL, nid, basic_auth_token, csrf_token) => {
+  return {
+    type: "EDIT_POST",
+    baseURL: baseURL,
+    nid: nid,
+    basic_auth_token: basic_auth_token,
+    csrf_token: csrf_token,
+  };
+};

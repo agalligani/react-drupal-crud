@@ -10,7 +10,7 @@ class AllUser extends Component {
       case 200:
         return (
           <Fragment>
-            <UserDeets user={this.props.user} />
+            <UserDeets state={this.props.user} />
           </Fragment>
         );
       default:

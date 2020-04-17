@@ -48,9 +48,10 @@ class ImageUpload extends Component {
         ],
         filemime: [
           {
-            value: "image/jpg",
+            value: "image/jpeg",
           },
         ],
+        uri: [{ value: `public://${this.state.selectedFile.name}` }],
         data: [
           {
             value: base64String,

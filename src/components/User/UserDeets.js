@@ -7,23 +7,10 @@ class UserDeets extends Component {
     this.props.dispatch({ type: "USER_LOGOUT" });
   };
 
-  _submitDelete = (n) => {
-    const url = `http://admin.flambeaucabin.com/node/${n}?_format=json`;
-
-    fetch(url, {
-      headers: {
-        Authorization: "Basic YWdhbGxpZ2FuaTpDb3dGbG9wIzEyMzQ=",
-        "X-csrf-token": "",
-      },
-      method: "DELETE",
-    });
-  };
-
   render() {
     return (
       <div className="post-container">
-        <h2>User Details</h2>
-        <h4>{JSON.stringify(this.props.user)}</h4>
+        <h2>Welcome Back, {JSON.stringify(this.props.state.user.user.name)}</h2>
         <button onClick={this._submitHandler}>Log Out</button>
       </div>
     );

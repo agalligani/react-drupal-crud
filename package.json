@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "basic-auth-token": "^0.4.2",
+    "bootstrap": "^4.4.1",
     "moment": "^2.24.0",
     "node-uuid": "^1.4.8",
     "react": "^16.13.1",
