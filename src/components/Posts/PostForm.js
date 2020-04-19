@@ -7,6 +7,7 @@ class PostForm extends Component {
     e.preventDefault();
     const title = this.getTitle.value;
     const body = this.getBody.value;
+    const { session, basic_auth_token } = this.props.state.user;
     const article = {
       title,
       body,
@@ -17,8 +18,8 @@ class PostForm extends Component {
       addArticle(
         article,
         "https://admin.flambeaucabin.com/",
-        this.props.state.user.basic_auth_token,
-        this.props.state.user.session
+        basic_auth_token,
+        session
       )
     );
 

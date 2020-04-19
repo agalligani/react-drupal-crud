@@ -23,7 +23,6 @@ class App extends Component {
             this.props.state.user.login_status === 200 ? true : false
           }
         />
-        <AuthButton />
         <Route path="/imageupload" render={() => <ImageUpload />} />
         <Route path="/home" render={() => <AllPost />} />
         <div>
@@ -87,52 +86,6 @@ function PrivateRoute({ children, ...rest }) {
         )
       }
     />
-  );
-}
-
-function PublicPage() {
-  return <h3>Public</h3>;
-}
-
-function ProtectedPage() {
-  return <PostForm />;
-}
-
-function AuthButton() {
-  let history = useHistory();
-
-  return fakeAuth.isAuthenticated ? (
-    <p>
-      Welcome!
-      <button
-        onClick={() => {
-          fakeAuth.signout(() => history.push("/"));
-        }}
-      >
-        Sign out
-      </button>
-    </p>
-  ) : (
-    <p>You are not logged in.</p>
-  );
-}
-
-function LoginPage() {
-  let history = useHistory();
-  let location = useLocation();
-
-  let { from } = location.state || { from: { pathname: "/" } };
-  let login = () => {
-    fakeAuth.authenticate(() => {
-      history.replace(from);
-    });
-  };
-
-  return (
-    <div>
-      <p>You must log in to view the page at {from.pathname}</p>
-      <button onClick={login}>Log in</button>
-    </div>
   );
 }
 

@@ -1,7 +1,7 @@
 import { initialPosts } from "./initialState";
+import { API_URL } from "../config";
 
 const delete_post = (nid, token, csrf) => {
-  console.log(nid, token);
   const headers = { Authorization: `Basic ${token}`, "X-CSRF-Token": csrf };
   const requestOptions = {
     method: "DELETE",
@@ -10,10 +10,7 @@ const delete_post = (nid, token, csrf) => {
     redirect: "follow",
   };
 
-  fetch(
-    `http://admin.flambeaucabin.com/node/${nid}?_format=json`,
-    requestOptions
-  )
+  fetch(`${API_URL}/node/${nid}?_format=json`, requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
@@ -25,14 +22,13 @@ const add_post = (baseURL, token, csrf, body) => {
     Authorization: `Basic ${token}`,
     "X-CSRF-Token": csrf,
   };
-  console.log(headers);
   const requestOptions = {
     method: "POST",
     headers: headers,
     body: body,
     redirect: "follow",
   };
-  fetch("https://admin.flambeaucabin.com/node?_format=hal_json", requestOptions)
+  fetch(`${API_URL}/node?_format=hal_json`, requestOptions)
     .then((response) => response.text())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
@@ -41,18 +37,18 @@ const add_post = (baseURL, token, csrf, body) => {
 export default (state = initialPosts, action) => {
   switch (action.type) {
     case "LOAD_POSTS":
+      console.log(action.payload);
       return action.payload;
 
-    case "ADD_POST":
+    case "ADD_POST": {
       const node = JSON.stringify({
         _links: {
           type: {
-            href: "https://admin.flambeaucabin.com/rest/type/node/article",
+            href: `${API_URL}/rest/type/node/article`,
           },
-          "https://admin.flambeaucabin.com/rest/relation/node/article/field_tags": [
+          [`${API_URL}/rest/relation/node/article/field_tags`]: [
             {
-              href:
-                "https://admin.flambeaucabin.com/taxonomy/term/1?_format=hal_json",
+              href: `${API_URL}/taxonomy/term/1?_format=hal_json`,
               lang: "en",
             },
           ],
@@ -75,15 +71,14 @@ export default (state = initialPosts, action) => {
           },
         ],
         _embedded: {
-          "https://admin.flambeaucabin.com/rest/relation/node/article/field_tags": [
+          [`${API_URL}/rest/relation/node/article/field_tags`]: [
             {
               _links: {
                 self: {
-                  href:
-                    "https://admin.flambeaucabin.com/taxonomy/term/1?_format=hal_json",
+                  href: `${API_URL}/taxonomy/term/1?_format=hal_json`,
                 },
                 type: {
-                  href: "https://admin.flambeaucabin.com/taxonomy_term/tags",
+                  href: `${API_URL}/taxonomy_term/tags`,
                 },
               },
               uuid: [
@@ -97,7 +92,6 @@ export default (state = initialPosts, action) => {
         },
       });
 
-      console.log(action);
       add_post(
         action.baseURL,
         action.basic_auth_token,
@@ -105,6 +99,19 @@ export default (state = initialPosts, action) => {
         node
       );
       return state;
+    }
+
+    case "TAG_ARTICLE": {
+      const node = JSON.stringify({});
+      tag_article(
+        action.baseURL,
+        action.basic_auth_token,
+        action.session_token,
+        node
+      );
+      return state;
+    }
+
     case "DELETE_POST":
       delete_post(action.nid, action.basic_auth_token, action.session_token);
       return state.filter((post) => post.id !== action.id);

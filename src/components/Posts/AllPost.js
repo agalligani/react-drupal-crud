@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Post from "./Post";
 import { setArticles } from "../../_actions/postActions";
 import EditComponent from "./EditComponent";
+import { API_URL } from "../../config";
 import axios from "axios";
 
 class AllPost extends Component {
@@ -11,8 +12,7 @@ class AllPost extends Component {
     let basic_auth_token = this.props.state
       ? this.props.state.user.basic_auth_token
       : null;
-    const articles_url =
-      "http://admin.flambeaucabin.com/articles/history?_format=json";
+    const articles_url = `${API_URL}/articles/history?_format=hal_json`;
     let response = await axios.get(articles_url);
     const data = response.data.map((p) => {
       return {
