@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-
-import UserDeets from "./UserDeets";
 import UserLogin from "./UserLogin";
 import { Route, Redirect, useHistory, useLocation } from "react-router";
 
@@ -27,7 +25,7 @@ class AllUser extends Component {
 function RedirectPage() {
   let history = useHistory();
   let location = useLocation();
-  console.log(location.state.from.pathname);
+  // console.log(location.state.from.pathname);
   console.log(history);
   return (
     <Route>

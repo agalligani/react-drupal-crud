@@ -50,7 +50,7 @@ class UserLogin extends Component {
 
     try {
       let response = await fetch(
-        "http://adminflambeau.com/user/login?_format=json",
+        "http://admin.flambeaucabin.com/user/login?_format=json",
         requestOptions
       );
 
@@ -99,4 +99,10 @@ class UserLogin extends Component {
   }
 }
 
-export default connect()(UserLogin);
+const mapStateToProps = (state) => {
+  return {
+    state: state,
+  };
+};
+
+export default connect(mapStateToProps)(UserLogin);
