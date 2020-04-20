@@ -1,39 +1,6 @@
 import { initialPosts } from "./initialState";
 import { API_URL } from "../config";
 
-const delete_post = (nid, token, csrf) => {
-  const headers = { Authorization: `Basic ${token}`, "X-CSRF-Token": csrf };
-  const requestOptions = {
-    method: "DELETE",
-    headers: headers,
-    body: "",
-    redirect: "follow",
-  };
-
-  fetch(`${API_URL}/node/${nid}?_format=json`, requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
-};
-
-const add_post = (baseURL, token, csrf, body) => {
-  const headers = {
-    "Content-type": "application/hal+json",
-    Authorization: `Basic ${token}`,
-    "X-CSRF-Token": csrf,
-  };
-  const requestOptions = {
-    method: "POST",
-    headers: headers,
-    body: body,
-    redirect: "follow",
-  };
-  fetch(`${API_URL}/node?_format=hal_json`, requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
-};
-
 export default (state = initialPosts, action) => {
   switch (action.type) {
     case "LOAD_POSTS":
@@ -97,9 +64,15 @@ export default (state = initialPosts, action) => {
         action.basic_auth_token,
         action.session_token,
         node
-      );
+      ).then((response) => {
+        console.log(response);
+      });
       return state;
     }
+
+    case "PROCESS_POST_RESPONSE":
+      console.log("process post response");
+      return state;
 
     case "TAG_ARTICLE": {
       const node = JSON.stringify({});
@@ -115,10 +88,12 @@ export default (state = initialPosts, action) => {
     case "DELETE_POST":
       delete_post(action.nid, action.basic_auth_token, action.session_token);
       return state.filter((post) => post.id !== action.id);
+
     case "EDIT_POST":
       return state.map((post) =>
         post.id === action.id ? { ...post, editing: !post.editing } : post
       );
+
     case "UPDATE":
       return state.map((post) => {
         if (post.id === action.id) {
@@ -133,4 +108,53 @@ export default (state = initialPosts, action) => {
     default:
       return state;
   }
+};
+
+const tag_article = (baseURL, basic_auth_token, session_token, node) => {
+  console.log(node);
+};
+
+const delete_post = (nid, token, csrf) => {
+  const headers = { Authorization: `Basic ${token}`, "X-CSRF-Token": csrf };
+  const requestOptions = {
+    method: "DELETE",
+    headers: headers,
+    body: "",
+    redirect: "follow",
+  };
+
+  fetch(`${API_URL}/node/${nid}?_format=json`, requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+};
+
+const add_post = async (baseURL, token, csrf, body) => {
+  const headers = {
+    "Content-type": "application/hal+json",
+    Authorization: `Basic ${token}`,
+    "X-CSRF-Token": csrf,
+  };
+  const requestOptions = {
+    method: "POST",
+    headers: headers,
+    body: body,
+    redirect: "follow",
+  };
+
+  const response = {
+    status: null,
+    data: null,
+  };
+
+  try {
+    let res = await fetch(`${API_URL}/node?_format=hal_json`, requestOptions);
+    response.data = await res.text();
+    response.status = "OK";
+  } catch (error) {
+    response.data = JSON.stringify(error);
+    response.status = "ERROR";
+  }
+
+  return response;
 };

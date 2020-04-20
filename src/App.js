@@ -4,8 +4,6 @@ import {
   Switch,
   Route,
   Redirect,
-  useHistory,
-  useLocation,
 } from "react-router-dom";
 import MainNav from "./components/MainNav/MainNav";
 import AllPost from "./components/Posts/AllPost";
@@ -13,6 +11,7 @@ import PostForm from "./components/Posts/PostForm";
 import ImageUpload from "./components/ImageUpload/ImageUpload";
 import UserApp from "./components/User/UserApp";
 import { connect } from "react-redux";
+import UserDeets from "./components/User/UserDeets";
 
 class App extends Component {
   render() {
@@ -32,6 +31,15 @@ class App extends Component {
                 return (
                   <Fragment>
                     <AllPost />
+                  </Fragment>
+                );
+              }}
+            </Route>
+            <Route path="/store">
+              {() => {
+                return (
+                  <Fragment>
+                    <UserDeets />
                   </Fragment>
                 );
               }}

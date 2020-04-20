@@ -10,13 +10,21 @@ class UserDeets extends Component {
   render() {
     return (
       <div className="post-container">
-        <h2>Welcome Back, {JSON.stringify(this.props.state.user.user.name)}</h2>
+        <h6>
+          Store state,
+          <pre> {JSON.stringify(this.props.state, null, "\t")}</pre>
+        </h6>
         <button onClick={this._submitHandler}>Log Out</button>
       </div>
     );
   }
 }
 
-export default connect()(UserDeets);
+const mapStateToProps = (state) => {
+  return {
+    state: state,
+  };
+};
 
+export default connect(mapStateToProps)(UserDeets);
 //https://appdividend.com/2018/06/15/react-redux-axios-tutorial-example/

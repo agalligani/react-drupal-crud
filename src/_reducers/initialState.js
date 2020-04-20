@@ -16,6 +16,9 @@ export const initialAlerts = {
 
 export const initialPosts = {
   posts: [],
+  status: null,
+  isLoading: false,
+  response: null,
 };
 
 export const initialMedia = {

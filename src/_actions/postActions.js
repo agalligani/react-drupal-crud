@@ -21,6 +21,14 @@ export const addArticle = (
   };
 };
 
+export const processArticleResponse = (status, response) => {
+  return {
+    type: "PROCESS_POST_RESPONSE",
+    status: status,
+    response: response,
+  };
+};
+
 export const deleteArticle = (baseURL, nid, basic_auth_token, csrf_token) => {
   return {
     type: "DELETE_POST",
