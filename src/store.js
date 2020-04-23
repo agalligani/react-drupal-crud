@@ -4,6 +4,7 @@
 
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
+import { logger } from "redux-logger";
 import rootReducer from "./_reducers/rootReducer";
 
 const saveToLocalStorage = (state) => {
@@ -29,7 +30,11 @@ const loadFromLocalStorage = () => {
 const persistedState = loadFromLocalStorage();
 
 const configureStore = (initialState = {}) => {
-  return createStore(rootReducer, persistedState, applyMiddleware(thunk));
+  return createStore(
+    rootReducer,
+    persistedState,
+    applyMiddleware(thunk, logger)
+  );
 };
 
 export { configureStore, saveToLocalStorage };

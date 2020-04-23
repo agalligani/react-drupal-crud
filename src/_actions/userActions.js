@@ -6,6 +6,7 @@ const REGISTER_USER = "REGISTER_USER";
 const USER_LOGIN = "USER_LOGIN";
 const USER_ERROR = "USER_ERROR";
 const USER_LOGOUT = "USER_LOGOUT";
+const USER_DELETE = "USER_DELETE";
 
 const registerUser = (data) => (dispatch) => {
   dispatch({
@@ -37,7 +38,7 @@ const userLogout = () => (dispatch) => {
 
 const userDelete = () => (dispatch) => {
   dispatch({
-    type: "USER_DELETE",
+    type: USER_DELETE,
     payload: "1234",
   });
 };

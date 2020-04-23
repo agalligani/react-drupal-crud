@@ -4,34 +4,23 @@ import UserLogin from "./UserLogin";
 import { Route, Redirect, useHistory, useLocation } from "react-router";
 
 class AllUser extends Component {
-  _formFactory = () => {
-    switch (this.props.user.user.login_status) {
-      case 200:
-        return <RedirectPage />;
-      default:
-        return (
-          <Fragment>
-            <UserLogin />
-          </Fragment>
-        );
-    }
+  _formFactory = ({ isAuthenticated }) => {
+    return isAuthenticated ? <RedirectPage /> : <UserLogin />;
   };
 
   render() {
-    return this._formFactory();
+    return this._formFactory(this.props.user);
   }
 }
 
 function RedirectPage() {
-  let history = useHistory();
   let location = useLocation();
-  // console.log(location.state.from.pathname);
-  console.log(history);
+  let redirectPath = location.state ? location.state.from.pathname : "/welcome";
   return (
     <Route>
       <Redirect
         to={{
-          pathname: location.state.from.pathname,
+          pathname: redirectPath,
           state: { from: location },
         }}
       ></Redirect>
@@ -41,7 +30,7 @@ function RedirectPage() {
 
 const mapStateToProps = (state) => {
   return {
-    user: state,
+    user: state.user,
   };
 };
 

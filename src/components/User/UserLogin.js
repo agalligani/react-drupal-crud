@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import token from "basic-auth-token";
+import { API_URL } from "../../config";
 
 const generateToken = (id, pw) => {
   let basic_auth_token = token(id, pw);
@@ -9,12 +10,9 @@ const generateToken = (id, pw) => {
 
 const get_session = async () => {
   try {
-    let response = await fetch(
-      "http://admin.flambeaucabin.com/rest/session/token",
-      {
-        method: "GET",
-      }
-    );
+    let response = await fetch(`${API_URL}/rest/session/token`, {
+      method: "GET",
+    });
     let session_token = await response.text();
     console.log("session", session_token);
     return session_token;
@@ -50,7 +48,7 @@ class UserLogin extends Component {
 
     try {
       let response = await fetch(
-        "http://admin.flambeaucabin.com/user/login?_format=json",
+        `${API_URL}/user/login?_format=json`,
         requestOptions
       );
 
@@ -101,7 +99,8 @@ class UserLogin extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    state: state,
+    user: state.user,
+    isAuthenticated: state.isAuthenticated,
   };
 };
 

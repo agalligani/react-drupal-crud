@@ -6,8 +6,8 @@ export const initialUser = {
   },
   csrf_token: null,
   logout_token: null,
-  message: null,
   login_status: null,
+  isAuthenticated: false,
 };
 
 export const initialAlerts = {

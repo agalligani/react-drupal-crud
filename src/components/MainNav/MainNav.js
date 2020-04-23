@@ -3,26 +3,11 @@ import { Nav, Navbar } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import { connect } from "react-redux";
+import LoginButton from "./LoginButton";
 
 class MainNav extends Component {
-  placeLogLink = () => {
-    return !this.props.isAuthenticated ? (
-      <button className="loggedOut" as={Link} to="/login">
-        Login
-      </button>
-    ) : (
-      <button className="loggedIn" onClick={this._submitHandler}>
-        Log Out
-      </button>
-    );
-  };
-
-  _submitHandler = (e) => {
-    e.preventDefault();
-    this.props.dispatch({ type: "USER_LOGOUT" });
-  };
-
   render() {
     return (
       <div className="sticky-wrapper">
@@ -38,7 +23,7 @@ class MainNav extends Component {
               <Nav.Link as={Link} to="/posts">
                 Posts
               </Nav.Link>
-              {this.placeLogLink()}
+              <LoginButton />
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -47,4 +32,7 @@ class MainNav extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return { user: state.user };
+};
 export default connect()(MainNav);

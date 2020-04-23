@@ -1,3 +1,5 @@
+import { API_URL } from "../config";
+
 export const setArticles = (data) => {
   return {
     type: "LOAD_POSTS",
@@ -11,7 +13,19 @@ export const addArticle = (
   basic_auth_token,
   session_token
 ) => {
-  console.log(baseURL);
+  return (dispatch) => {
+    dispatch(
+      addArticleAsync(article, baseURL, basic_auth_token, session_token)
+    );
+  };
+};
+
+export const addArticleAsync = (
+  article,
+  baseURL,
+  basic_auth_token,
+  session_token
+) => {
   return {
     type: "ADD_POST",
     article: article,

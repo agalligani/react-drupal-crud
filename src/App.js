@@ -35,7 +35,7 @@ class App extends Component {
                 );
               }}
             </Route>
-            <Route path="/store">
+            <Route path="/welcome">
               {() => {
                 return (
                   <Fragment>
@@ -81,8 +81,8 @@ function PrivateRoute({ children, ...rest }) {
   return (
     <Route
       {...rest}
-      render={({ location }) =>
-        isAuthenticated ? (
+      render={({ location }) => {
+        return isAuthenticated ? (
           children
         ) : (
           <Redirect
@@ -91,8 +91,8 @@ function PrivateRoute({ children, ...rest }) {
               state: { from: location },
             }}
           />
-        )
-      }
+        );
+      }}
     />
   );
 }
