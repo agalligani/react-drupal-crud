@@ -1,8 +1,22 @@
 import { initialPosts } from "./initialState";
-import { API_URL } from "../config";
+import { API_URL, HAL_JSON_ARTICLE } from "../config";
+import { REQUEST_POSTS, RECEIVE_POSTS } from "../_actions/postActions";
 
 export default (state = initialPosts, action) => {
   switch (action.type) {
+    case "REQUEST_POST_UPDATE":
+      return state;
+
+    case REQUEST_POSTS: {
+      console.log("action", action);
+      return state;
+    }
+
+    case RECEIVE_POSTS: {
+      console.log("action", action);
+      return { ...state, data: action.data, isLoading: false };
+    }
+
     case "LOAD_POSTS":
       console.log(action.payload);
       return action.payload;

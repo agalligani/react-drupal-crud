@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
 import { connect } from "react-redux";
 import LoginButton from "./LoginButton";
 
@@ -35,4 +33,5 @@ class MainNav extends Component {
 const mapStateToProps = (state) => {
   return { user: state.user };
 };
+
 export default connect()(MainNav);

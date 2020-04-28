@@ -16,6 +16,11 @@ export default (state = initialUser, action) => {
           login_status: action.payload.status,
           basic_auth_token: action.payload.basic_auth_token,
           session: action.payload.session,
+          requestHeader: {
+            "Content-type": "application/hal+json",
+            Authorization: `Basic ${action.payload.basic_auth_token}`,
+            "X-CSRF-Token": action.payload.session,
+          },
           isAuthenticated: true, //should probably look at this
         };
       } else {

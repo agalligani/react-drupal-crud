@@ -1,17 +1,30 @@
 import React, { Component } from "react";
+import { postArticleUpdate } from "../../_actions/postActions";
 import { connect } from "react-redux";
 
 class EditComponent extends Component {
-  handleEdit = e => {
+  handleEdit = (e) => {
     e.preventDefault();
-    const newTitle = this.getTitle.value;
-    const newMessage = this.getMessage.value;
+    const title = this.getTitle.value;
+    const body = this.getMessage.value;
     const data = {
-      newTitle,
-      newMessage
+      title,
+      body,
     };
-    this.props.dispatch({ type: "UPDATE", id: this.props.post.id, data: data });
+    this.props.updatePost({
+      nid: this.props.post.nid,
+      data: data,
+      isLoading: true,
+      headers: this.props.user.requestHeader,
+    });
+    // this.props.dispatch({ type: "UPDATE", id: this.props.post.id, data: data });
   };
+
+  postUpdate = (e) => {
+    let payload = { nid: 1234 };
+    this.props.dispatch(this.props.updatePost(payload));
+  };
+
   render() {
     return (
       <div key={this.props.post.id} className="post">
@@ -19,7 +32,7 @@ class EditComponent extends Component {
           <input
             required
             type="text"
-            ref={input => (this.getTitle = input)}
+            ref={(input) => (this.getTitle = input)}
             defaultValue={this.props.post.title}
             placeholder="Enter Post Title"
           />
@@ -28,7 +41,7 @@ class EditComponent extends Component {
           <textarea
             required
             rows="5"
-            ref={input => (this.getMessage = input)}
+            ref={(input) => (this.getMessage = input)}
             defaultValue={this.props.post.message}
             cols="28"
             placeholder="Enter Post"
@@ -37,8 +50,15 @@ class EditComponent extends Component {
           <br />
           <button>Update</button>
         </form>
+        <button onClick={this.props.updatePost}>Update</button>
       </div>
     );
   }
 }
-export default connect()(EditComponent);
+
+const mapDispatchToProps = { updatePost: postArticleUpdate };
+const mapStateToProps = (state) => ({ posts: state.posts, user: state.user });
+
+EditComponent = connect(mapStateToProps, mapDispatchToProps)(EditComponent);
+
+export default EditComponent;

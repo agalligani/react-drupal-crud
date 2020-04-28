@@ -4,18 +4,25 @@ import { deleteArticle } from "../../_actions/postActions";
 
 class Post extends Component {
   render() {
+    const {
+      title,
+      message,
+      nid,
+      csrf_token,
+      basic_auth_token,
+    } = this.props.post;
     return (
       <div className="post">
-        <h2 className="post_title">{this.props.post.title}</h2>
-        <p className="post_message">{this.props.post.message}</p>
+        <h2 className="post_title">{title}</h2>
+        <p className="post_message">{message}</p>
         <div className="control-buttons">
           <button
             className="edit"
             onClick={() =>
               this.props.dispatch({
                 type: "EDIT_POST",
-                nid: this.props.post.nid,
-                csrf_token: this.props.post.csrf_token,
+                nid: nid,
+                csrf_token: csrf_token,
               })
             }
           >
@@ -27,9 +34,9 @@ class Post extends Component {
               this.props.dispatch(
                 deleteArticle(
                   "http://admin.flambeaucabin.com/",
-                  this.props.post.nid,
-                  this.props.post.basic_auth_token,
-                  this.props.post.csrf_token
+                  nid,
+                  basic_auth_token,
+                  csrf_token
                 )
               )
             }
