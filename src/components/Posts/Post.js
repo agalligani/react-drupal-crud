@@ -1,30 +1,33 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { deleteArticle } from "../../_actions/postActions";
+import { deleteArticle } from "../../_actions/_postActions";
 
 class Post extends Component {
   render() {
     const {
       title,
-      message,
+      field_image,
+      body,
       nid,
       csrf_token,
       basic_auth_token,
     } = this.props.post;
     return (
       <div className="post">
+        {field_image}
         <h2 className="post_title">{title}</h2>
-        <p className="post_message">{message}</p>
+        <p className="post_message">{body}</p>
         <div className="control-buttons">
           <button
             className="edit"
-            onClick={() =>
-              this.props.dispatch({
+            onClick={() => {
+              console.log("here ", this.props);
+              return this.props.dispatch({
                 type: "EDIT_POST",
                 nid: nid,
                 csrf_token: csrf_token,
-              })
-            }
+              });
+            }}
           >
             Edit
           </button>

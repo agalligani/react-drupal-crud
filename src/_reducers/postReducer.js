@@ -1,6 +1,10 @@
 import { initialPosts } from "./initialState";
 import { API_URL, HAL_JSON_ARTICLE } from "../config";
-import { REQUEST_POSTS, RECEIVE_POSTS } from "../_actions/postActions";
+import {
+  REQUEST_POSTS,
+  RECEIVE_POSTS,
+  EDIT_POST,
+} from "../_actions/_postActions";
 
 export default (state = initialPosts, action) => {
   switch (action.type) {
@@ -103,7 +107,7 @@ export default (state = initialPosts, action) => {
       delete_post(action.nid, action.basic_auth_token, action.session_token);
       return state.filter((post) => post.id !== action.id);
 
-    case "EDIT_POST":
+    case EDIT_POST:
       return state.map((post) =>
         post.id === action.id ? { ...post, editing: !post.editing } : post
       );

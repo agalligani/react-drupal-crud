@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { postArticleUpdate } from "../../_actions/postActions";
+import { postArticleUpdate } from "../../_actions/_postActions";
 import { connect } from "react-redux";
 
 class EditComponent extends Component {

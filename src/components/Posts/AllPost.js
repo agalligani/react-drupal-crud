@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Post from "./Post";
 import EditComponent from "./EditComponent";
-import { API_URL } from "../../config";
-import axios from "axios";
-import { fetchPosts } from "../../_actions/postActions";
+import { fetchPosts } from "../../_actions/_postActions";
 
 class AllPost extends Component {
   componentDidMount = () => {
@@ -18,9 +16,9 @@ class AllPost extends Component {
         {this.props.posts.map((post) => (
           <div key={post.nid}>
             {post.editing ? (
-              <EditComponent post={post} key={post.id} />
+              <EditComponent post={post} key={post.nid} />
             ) : (
-              <Post post={post} key={post.id} />
+              <Post post={post} key={post.nid} />
             )}
           </div>
         ))}

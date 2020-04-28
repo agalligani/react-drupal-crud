@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addArticle } from "../../_actions/postActions";
+import { addArticle } from "../../_actions/_postActions";
 
 class PostForm extends Component {
   handleSubmit = (e) => {

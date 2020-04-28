@@ -15,7 +15,7 @@ export const initialAlerts = {
 };
 
 export const initialPosts = {
-  posts: [],
+  data: [],
   status: null,
   isLoading: false,
   response: null,
